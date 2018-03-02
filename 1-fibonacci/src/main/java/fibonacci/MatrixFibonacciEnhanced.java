@@ -1,7 +1,7 @@
 package fibonacci;
 
 /**
- * 基于矩阵计算菲波那切数列加强版。
+ * 基于矩阵计算菲波那切数列加强版。复杂度与非加强版一样，空间节约一半。
  * f0=0 f1=1 f2=1 f3=2
  * 在矩阵计算的基础上，将其优化为两个多项式的计算。
  * An = A(2m) = ( f(2m+1) f2m    )
@@ -21,8 +21,8 @@ package fibonacci;
  * f(n) = f(2m) = (f(m+1) + f(m-1))fm = (2f(m+1) - fm)fm
  */
 public class MatrixFibonacciEnhanced {
-    // f1=1, f0=0
-    public static final long A[] = new long[]{1, 0};
+    // f1=1, f2=1
+    public static final long A[] = new long[]{1, 1};
 
     public long getFibonacci(int n) {
         return fibonacci(n-1)[0];
@@ -36,17 +36,18 @@ public class MatrixFibonacciEnhanced {
                 return evenCalculate(A[1], A[0]);
             }
         }
+        // 获得fm与fm+1值.temp[0]为fm+1,temp[1]为fm
         long[] temp = fibonacci(n / 2);
         if (n % 2 == 1) {
-            return oddCalculate(temp[1], temp[0]);
+            return oddCalculate(temp[0], temp[1]);
         } else {
-            return evenCalculate(temp[1], temp[0]);
+            return evenCalculate(temp[0], temp[1]);
         }
     }
 
     /**
      * 当n为奇数时.
-     * f(n+1) = f(2m+2) = (2fm + f(m+1))fm
+     * f(n+1) = f(2m+2) = (2fm + f(m+1))f(m+1)
      * f(n)   = f(m+1)^2 + fm^2
      * @param a fm+1
      * @param b fm
@@ -54,7 +55,7 @@ public class MatrixFibonacciEnhanced {
      */
     private long[] oddCalculate(long a, long b) {
         return new long[]{
-                (2 * b + a) * b,
+                ((2 * b) + a) * a,
                 a * a + b * b
         };
     }
@@ -70,7 +71,7 @@ public class MatrixFibonacciEnhanced {
     private long[] evenCalculate(long a, long b) {
         return new long[]{
                 a * a + b * b,
-                (2 * a - b) * b
+                ( (2 * a) - b) * b
         };
     }
 
