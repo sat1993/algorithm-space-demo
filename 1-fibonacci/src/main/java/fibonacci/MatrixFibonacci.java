@@ -25,7 +25,7 @@ public class MatrixFibonacci {
     }
 
     public long getFibonacci(int n) {
-        return fibonacci(n)[0][1];
+        return fibonacci(n-1)[0][0];
     }
     private long[][] fibonacci(int n) {
         if (n == 1) {
